@@ -18,7 +18,8 @@ function bannerchanger_info()
 		"authorsite"	=> "http://mybbservice.de",
 		"version"		=> "1.0",
 		"guid" 			=> "",
-		"compatibility" => "*"
+		"compatibility" => "*",
+		"dlcid"			=> "34"
 	);
 	
 	return $info;
@@ -106,6 +107,18 @@ function bannerchanger_uninstall()
 	rebuild_settings();
 }
 
+function bannerchanger_activate()
+{
+	require MYBB_ROOT."inc/adminfunctions_templates.php";
+	find_replace_templatesets("header", "#".preg_quote('{$theme[\'logo\']}')."#i", '{\$logo}');
+}
+
+function bannerchanger_deactivate()
+{
+	require MYBB_ROOT."inc/adminfunctions_templates.php";
+	find_replace_templatesets("header", "#".preg_quote('{$logo}')."#i", '{\$theme[\'logo\']}');
+}
+
 function load_lang()
 {
 	global $lang;
@@ -121,49 +134,20 @@ function load_header()
 	
 	$zusatz = "";
 	
-	if($mybb->settings['bannerchanger_eastern']) {
-		//Osterdatum laden
-		$ostern = easter_date();
-		
-		if($month == date("m", $ostern) && $day == date("d", $ostern)) {
-			$zusatz = "easter";
-		}
-	}
-	
-	if($mybb->settings['bannerchanger_xmas'] && $month == 12 && $day <= 26) {
-		//Wir haben Weihnachten!
-		$zusatz = "xmas";
-	}
-	
-	if($mybb->settings['bannerchanger_newyear'] && (($month == 12 && $day == 31) || ($month == 1 && $day == 1))) {
-		//Wir haben Silvester!
-		$zusatz = "newyear";
-	}
-	
-	if($mybb->settings['bannerchanger_birthday']) {
-		//Geburtstag überprüfen
-		if(!empty($mybb->user['birthday'])) {
-			list($bday, $bmonth) = explode("-", $mybb->user['birthday']);
-			if($bday == $day && $bmonth == $month) {
-				$zusatz = "bday";
-			}
-		}
-	}
-
 	
 	// Select the board theme to use.
 	$loadstyle = '';
 	$load_from_forum = 0;
 	$style = array();
-	
+
 	// This user has a custom theme set in their profile
 	if(isset($mybb->user['style']) && intval($mybb->user['style']) != 0)
 	{
 	        $loadstyle = "tid='".$mybb->user['style']."'";
 	}
-	
+
 	$valid = array(
-	        "showthread.php", 
+	        "showthread.php",
 	        "forumdisplay.php",
 	        "newthread.php",
 	        "newreply.php",
@@ -174,17 +158,17 @@ function load_header()
 	        "printthread.php",
 	        "moderation.php"
 	);
-	
+
 	if(in_array($current_page, $valid))
 	{
 	        cache_forums();
-	
+
 	        // If we're accessing a post, fetch the forum theme for it and if we're overriding it
 	        if(!empty($mybb->input['pid']))
 	        {
 	                $query = $db->simple_select("posts", "fid", "pid = '".intval($mybb->input['pid'])."'", array("limit" => 1));
 	                $fid = $db->fetch_field($query, "fid");
-	
+
 	                if($fid)
 	                {
 	                        $style = $forum_cache[$fid];
@@ -196,14 +180,14 @@ function load_header()
 	        {
 	                $query = $db->simple_select("threads", "fid", "tid = '".intval($mybb->input['tid'])."'", array("limit" => 1));
 	                $fid = $db->fetch_field($query, "fid");
-	
+
 	                if($fid)
 	                {
 	                        $style = $forum_cache[$fid];
 	                        $load_from_forum = 1;
 	                }
 	        }
-	
+
 	        // We have a forum id - simply load the theme from it
 	        else if($mybb->input['fid'])
 	        {
@@ -212,7 +196,7 @@ function load_header()
 	        }
 	}
 	unset($valid);
-	
+
 	// From all of the above, a theme was found
 	if(isset($style['style']) && $style['style'] > 0)
 	{
@@ -222,17 +206,17 @@ function load_header()
 	                $loadstyle = "tid='".intval($style['style'])."'";
 	        }
 	}
-	
+
 	// After all of that no theme? Load the board default
 	if(empty($loadstyle))
 	{
 	        $loadstyle = "def='1'";
 	}
-	
+
 	// Fetch the theme to load from the database
 	$query = $db->simple_select("themes", "name, tid, properties, stylesheets", $loadstyle, array('limit' => 1));
 	$theme = $db->fetch_array($query);
-	
+
 	// No theme was found - we attempt to load the master or any other theme
 	if(!$theme['tid'])
 	{
@@ -257,20 +241,61 @@ function load_header()
 	{
 	        $theme['logo'] = $mybb->settings['bburl']."/".$theme['logo'];
 	}
-	
+
 	$logo = $theme['logo'];
+	
+	//Theme ist mal wieder nicht geladen...
+	$dir = substr($logo, 0, strrpos($logo, "."));
+	$ext = substr($logo, strrpos($logo, "."));
+
+	
+	
+	if($mybb->settings['bannerchanger_birthday'] && check_image($dir."_bday".$ext)) {
+		//Geburtstag überprüfen
+		if(!empty($mybb->user['birthday'])) {
+			list($bday, $bmonth) = explode("-", $mybb->user['birthday']);
+			if($bday == $day && $bmonth == $month) {
+				$zusatz = "bday";
+			}
+		}
+	}
+
+	if($mybb->settings['bannerchanger_eastern'] && $zusatz == "") {
+		//Osterdatum laden
+		$ostern = easter_date();
+		
+		if($month == date("m", $ostern) && $day == date("d", $ostern)) {
+			$zusatz = "easter";
+		}
+	}
+	
+	if($mybb->settings['bannerchanger_xmas'] && $month == 12 && $day <= 26 && $zusatz == "") {
+		//Wir haben Weihnachten!
+		$zusatz = "xmas";
+	}
+	
+	if($mybb->settings['bannerchanger_newyear'] && (($month == 12 && $day == 31) || ($month == 1 && $day == 1)) && $zusatz == "") {
+		//Wir haben Silvester!
+		$zusatz = "newyear";
+	}
+
 	
 	if($zusatz == "") 
 	    //Schade kein Bannerwechsel
 		return;
-
-	//Theme ist mal wieder nicht geladen...
-	$dir = substr($logo, 0, strrpos($logo, "."));
-	$ext = substr($logo, strrpos($logo, "."));
 	
 	$nlogo = $dir."_".$zusatz.$ext;
 	
-	if(file_exists($nlogo))
+	if(check_image($nlogo))
 	    $logo = $nlogo;
+}
+
+function check_image($img)
+{
+	$file_headers = @get_headers($img);
+	if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+		return false;
+	}
+	return true;
 }
 ?>
