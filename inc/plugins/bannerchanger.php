@@ -16,7 +16,7 @@ function bannerchanger_info()
 		"website"		=> "http://mybbservice.de",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de",
-		"version"		=> "1.0",
+		"version"		=> "1.1",
 		"guid" 			=> "",
 		"compatibility" => "*",
 		"dlcid"			=> "34"
@@ -85,6 +85,41 @@ function bannerchanger_install()
         "gid"            => (int)$gid,
     );
 	$db->insert_query("settings", $setting);
+
+	//Ab Version 1.1
+	$setting = array(
+        "name"           => "bannerchanger_night",
+        "title"          => $lang->setting_bannerchanger_night,
+        "description"    => $lang->setting_bannerchanger_night_desc,
+        "optionscode"    => "yesno",
+        "value"          => '1',
+        "disporder"      => '5',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
+	$setting = array(
+        "name"           => "bannerchanger_sundown",
+        "title"          => $lang->setting_bannerchanger_sundown,
+        "description"    => $lang->setting_bannerchanger_sundown_desc,
+        "optionscode"    => "text",
+        "value"          => '19',
+        "disporder"      => '6',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
+		$setting = array(
+        "name"           => "bannerchanger_sunup",
+        "title"          => $lang->setting_bannerchanger_sunup,
+        "description"    => $lang->setting_bannerchanger_sunup_desc,
+        "optionscode"    => "text",
+        "value"          => '7',
+        "disporder"      => '4',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
 	rebuild_settings();
 }
 
@@ -117,6 +152,57 @@ function bannerchanger_deactivate()
 {
 	require MYBB_ROOT."inc/adminfunctions_templates.php";
 	find_replace_templatesets("header", "#".preg_quote('{$logo}')."#i", '{\$theme[\'logo\']}');
+}
+
+function bannerchanger_versions()
+{
+	return array(
+	 "1.0",
+	 "1.1"
+	);
+}
+
+function bannerchanger_update_1_1()
+{
+	global $db;
+
+	$query = $db->simple_select("settinggroups", "gid", "name='bannerchanger'");
+    $gid = $db->fetch_field($query, "gid");
+
+	$setting = array(
+        "name"           => "bannerchanger_night",
+        "title"          => $lang->setting_bannerchanger_night,
+        "description"    => $lang->setting_bannerchanger_night_desc,
+        "optionscode"    => "yesno",
+        "value"          => '1',
+        "disporder"      => '5',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
+	$setting = array(
+        "name"           => "bannerchanger_sundown",
+        "title"          => $lang->setting_bannerchanger_sundown,
+        "description"    => $lang->setting_bannerchanger_sundown_desc,
+        "optionscode"    => "text",
+        "value"          => '19',
+        "disporder"      => '6',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
+		$setting = array(
+        "name"           => "bannerchanger_sunup",
+        "title"          => $lang->setting_bannerchanger_sunup,
+        "description"    => $lang->setting_bannerchanger_sunup_desc,
+        "optionscode"    => "text",
+        "value"          => '7',
+        "disporder"      => '4',
+        "gid"            => (int)$gid,
+    );
+	$db->insert_query("settings", $setting);
+
+	rebuild_settings();
 }
 
 function load_lang()
@@ -279,6 +365,9 @@ function load_header()
 		$zusatz = "newyear";
 	}
 
+	$hour = my_date("G");
+	if($mybb->settings['bannerchanger_night'] && ($hour >= $mybb->settings['sundown'] || $hour < $mybb->settings['sunup']) && check_image($dir."_".$zusatz."_night".$ext))
+		$zusatz .= "_night";
 	
 	if($zusatz == "") 
 	    //Schade kein Bannerwechsel
