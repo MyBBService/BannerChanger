@@ -115,7 +115,7 @@ function bannerchanger_install()
         "description"    => $lang->setting_bannerchanger_sunup_desc,
         "optionscode"    => "text",
         "value"          => '7',
-        "disporder"      => '4',
+        "disporder"      => '7',
         "gid"            => (int)$gid,
     );
 	$db->insert_query("settings", $setting);
@@ -197,7 +197,7 @@ function bannerchanger_update_1_1()
         "description"    => $lang->setting_bannerchanger_sunup_desc,
         "optionscode"    => "text",
         "value"          => '7',
-        "disporder"      => '4',
+        "disporder"      => '7',
         "gid"            => (int)$gid,
     );
 	$db->insert_query("settings", $setting);
@@ -365,9 +365,21 @@ function load_header()
 		$zusatz = "newyear";
 	}
 
+	//Nachtüberprufung = Drecksarbeit
 	$hour = my_date("G");
-	if($mybb->settings['bannerchanger_night'] && ($hour >= $mybb->settings['sundown'] || $hour < $mybb->settings['sunup']) && check_image($dir."_".$zusatz."_night".$ext))
-		$zusatz .= "_night";
+	
+	//Möglichen Unterstrich anhängen
+	if($zusatz != "")
+	    $zusatz .= "_";
+
+	//Aktiviert und nachts und bild vorhanden?
+	if($mybb->settings['bannerchanger_night'] && ($hour >= $mybb->settings['bannerchanger_sundown'] || $hour < $mybb->settings['bannerchanger_sunup']) && check_image($dir."_".$zusatz."night".$ext)) {
+   	    //Nachtzusatz
+		$zusatz .= "night";
+	}
+
+	//Mögliche anfangs/end unterstriche entfernen
+	$zusatz = trim($zusatz, "_");
 	
 	if($zusatz == "") 
 	    //Schade kein Bannerwechsel
