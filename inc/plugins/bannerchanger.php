@@ -16,7 +16,7 @@ function bannerchanger_info()
 		"website"		=> "http://mybbservice.de",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de",
-		"version"		=> "1.1",
+		"version"		=> "1.1.1",
 		"guid" 			=> "",
 		"compatibility" => "*",
 		"dlcid"			=> "34"
