@@ -347,7 +347,7 @@ function load_header()
 		}
 	}
 
-	if($mybb->settings['bannerchanger_eastern'] && $zusatz == "") {
+	if($mybb->settings['bannerchanger_easter'] && $zusatz == "") {
 		//Osterdatum laden
 		$ostern = easter_date();
 		
