@@ -32,9 +32,9 @@ function bannerchanger_install()
 
 	//Einstellungs Gruppe
 	$settings_group = array(
-        "title"          => $lang->setting_group_bannerchanger,
+        "title"          => $db->escape_string($lang->setting_group_bannerchanger),
         "name"           => "bannerchanger",
-        "description"    => $lang->setting_group_bannerchanger_desc,
+        "description"    => $db->escape_string($lang->setting_group_bannerchanger_desc),
         "disporder"      => "40",
         "isdefault"      => "0",
     );
@@ -44,8 +44,8 @@ function bannerchanger_install()
 	//Einstellungen
 	$setting = array(
         "name"           => "bannerchanger_birthday",
-        "title"          => $lang->setting_bannerchanger_birthday,
-        "description"    => $lang->setting_bannerchanger_birthday_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_birthday),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_birthday_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '1',
@@ -55,8 +55,8 @@ function bannerchanger_install()
 
 	$setting = array(
         "name"           => "bannerchanger_newyear",
-        "title"          => $lang->setting_bannerchanger_newyear,
-        "description"    => $lang->setting_bannerchanger_newyear_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_newyear),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_newyear_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '2',
@@ -66,8 +66,8 @@ function bannerchanger_install()
 	
 	$setting = array(
         "name"           => "bannerchanger_easter",
-        "title"          => $lang->setting_bannerchanger_easter,
-        "description"    => $lang->setting_bannerchanger_easter_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_easter),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_easter_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '3',
@@ -77,8 +77,8 @@ function bannerchanger_install()
 
 	$setting = array(
         "name"           => "bannerchanger_xmas",
-        "title"          => $lang->setting_bannerchanger_xmas,
-        "description"    => $lang->setting_bannerchanger_xmas_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_xmas),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_xmas_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '4',
@@ -89,8 +89,8 @@ function bannerchanger_install()
 	//Ab Version 1.1
 	$setting = array(
         "name"           => "bannerchanger_night",
-        "title"          => $lang->setting_bannerchanger_night,
-        "description"    => $lang->setting_bannerchanger_night_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_night),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_night_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '5',
@@ -100,8 +100,8 @@ function bannerchanger_install()
 
 	$setting = array(
         "name"           => "bannerchanger_sundown",
-        "title"          => $lang->setting_bannerchanger_sundown,
-        "description"    => $lang->setting_bannerchanger_sundown_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_sundown),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_sundown_desc),
         "optionscode"    => "text",
         "value"          => '19',
         "disporder"      => '6',
@@ -111,8 +111,8 @@ function bannerchanger_install()
 
 		$setting = array(
         "name"           => "bannerchanger_sunup",
-        "title"          => $lang->setting_bannerchanger_sunup,
-        "description"    => $lang->setting_bannerchanger_sunup_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_sunup),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_sunup_desc),
         "optionscode"    => "text",
         "value"          => '7',
         "disporder"      => '7',
@@ -158,7 +158,8 @@ function bannerchanger_versions()
 {
 	return array(
 	 "1.0",
-	 "1.1"
+	 "1.1",
+	 "1.1.1"
 	);
 }
 
@@ -171,8 +172,8 @@ function bannerchanger_update_1_1()
 
 	$setting = array(
         "name"           => "bannerchanger_night",
-        "title"          => $lang->setting_bannerchanger_night,
-        "description"    => $lang->setting_bannerchanger_night_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_night),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_night_desc),
         "optionscode"    => "yesno",
         "value"          => '1',
         "disporder"      => '5',
@@ -182,8 +183,8 @@ function bannerchanger_update_1_1()
 
 	$setting = array(
         "name"           => "bannerchanger_sundown",
-        "title"          => $lang->setting_bannerchanger_sundown,
-        "description"    => $lang->setting_bannerchanger_sundown_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_sundown),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_sundown_desc),
         "optionscode"    => "text",
         "value"          => '19',
         "disporder"      => '6',
@@ -193,8 +194,8 @@ function bannerchanger_update_1_1()
 
 		$setting = array(
         "name"           => "bannerchanger_sunup",
-        "title"          => $lang->setting_bannerchanger_sunup,
-        "description"    => $lang->setting_bannerchanger_sunup_desc,
+        "title"          => $db->escape_string($lang->setting_bannerchanger_sunup),
+        "description"    => $db->escape_string($lang->setting_bannerchanger_sunup_desc),
         "optionscode"    => "text",
         "value"          => '7',
         "disporder"      => '7',
