@@ -16,7 +16,7 @@ function bannerchanger_info()
 		"website"		=> "http://mybbservice.de",
 		"author"		=> "MyBBService",
 		"authorsite"	=> "http://mybbservice.de",
-		"version"		=> "1.1.1",
+		"version"		=> "1.1.2",
 		"guid" 			=> "",
 		"compatibility" => "*",
 		"dlcid"			=> "34"
@@ -159,7 +159,8 @@ function bannerchanger_versions()
 	return array(
 	 "1.0",
 	 "1.1",
-	 "1.1.1"
+	 "1.1.1",
+	 "1.1.2"
 	);
 }
 
@@ -216,8 +217,8 @@ function load_header()
 {
 	global $mybb, $logo, $db;
 	
-	$day = date("d");
-	$month = date("m");
+	$day = my_date("d");
+	$month = my_date("m");
 	
 	$zusatz = "";
 	
@@ -351,7 +352,7 @@ function load_header()
 		//Osterdatum laden
 		$ostern = easter_date();
 		
-		if($month == date("m", $ostern) && $day == date("d", $ostern)) {
+		if($month == my_date("m", $ostern) && $day == my_date("d", $ostern)) {
 			$zusatz = "easter";
 		}
 	}
