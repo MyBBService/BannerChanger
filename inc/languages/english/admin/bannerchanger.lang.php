@@ -11,8 +11,8 @@ $l['setting_bannerchanger_xmas'] = "Change banner at christmas time?";
 $l['setting_bannerchanger_xmas_desc'] = "Shows a special banner from 12.1 till 12.26<br />The naming is the same as above but with the addition of \"_xmas\"";
 $l['setting_bannerchanger_night'] = "Change banner at night?";
 $l['setting_bannerchanger_night_desc'] = "Shows a special banner at night<br />The naming is the same as above but with the addition of \"_night\" and counts also for special banners (eg logo_xmas_night would be shown on christmas time at night)";
-$l['setting_bannerchanger_sundown'] = "Hour of sunset (eg 19 für 7:00 PM)";
+$l['setting_bannerchanger_sundown'] = "Hour of sunset (eg 19 for 7:00 PM)";
 $l['setting_bannerchanger_sundown_desc'] = "";
-$l['setting_bannerchanger_sunup'] = "Hour of sunrise (eg 7 für 07:00 AM)";
+$l['setting_bannerchanger_sunup'] = "Hour of sunrise (eg 7 for 07:00 AM)";
 $l['setting_bannerchanger_sunup_desc'] = "";
 ?>
